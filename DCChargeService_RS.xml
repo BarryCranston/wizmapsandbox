@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions name='DCChargeServiceBean' targetNamespace='http://ws.dccharge.server.asterix.magenta.com/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://ws.dccharge.server.asterix.magenta.com/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+    <types>
+        <xs:schema targetNamespace='http://ws.dccharge.server.asterix.magenta.com/' version='1.0' xmlns:tns='http://ws.dccharge.server.asterix.magenta.com/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+            <xs:element name='GetDCCharges' type='tns:GetDCCharges'/>
+            <xs:element name='GetDCChargesResponse' type='tns:GetDCChargesResponse'/>
+            <xs:element name='dcChargeDeliverySlot' type='tns:DeliverySlot'/>
+            <xs:element name='dcChargeFeeDetails' type='tns:FeeDetails'/>
+            <xs:element name='dcChargeRequest' type='tns:DCChargeRequest'/>
+            <xs:element name='dcChargeResponse' type='tns:DCChargeResponse'/>
+            <xs:complexType name='GetDCCharges'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='Request' type='tns:DCChargeRequest'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='DCChargeRequest'>
+                <xs:sequence>
+                    <xs:element name='CountryCode' type='xs:string'/>
+                    <xs:element minOccurs='0' name='RateCode' type='xs:string'/>
+                    <xs:element minOccurs='0' name='AWD' type='xs:string'/>
+                    <xs:element name='Delivery' type='xs:boolean'/>
+                    <xs:element minOccurs='0' name='DeliveryAddressType' nillable='true' type='tns:AddressType'/>
+                    <xs:element minOccurs='0' name='DeliveryStationMnemonic' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='DeliveryStationPostcode' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='CustomerDeliveryPostcode' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='DeliveryDate' nillable='true' type='xs:string'/>
+                    <xs:element name='Collection' type='xs:boolean'/>
+                    <xs:element minOccurs='0' name='CollectionAddressType' nillable='true' type='tns:AddressType'/>
+                    <xs:element minOccurs='0' name='CollectionStationMnemonic' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='CollectionStationPostcode' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='CustomerCollectionPostcode' nillable='true' type='xs:string'/>
+                    <xs:element minOccurs='0' name='CollectionDate' nillable='true' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='GetDCChargesResponse'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='DCChargeResponse' type='tns:DCChargeResponse'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='DCChargeResponse'>
+                <xs:sequence>
+                    <xs:element maxOccurs='unbounded' minOccurs='0' name='DeliverySlots' type='tns:DeliverySlot'/>
+                    <xs:element minOccurs='0' name='DeliveryFeeDetails' type='tns:FeeDetails'/>
+                    <xs:element minOccurs='0' name='CollectionFeeDetails' type='tns:FeeDetails'/>
+                    <xs:element minOccurs='0' name='FullDeliveryFee' type='xs:double'/>
+                    <xs:element minOccurs='0' name='FullCollectionFee' type='xs:double'/>
+                    <xs:element minOccurs='0' name='DeliveryPremiumSurcharge' type='xs:double'/>
+                    <xs:element minOccurs='0' name='CollectionPremiumSurcharge' type='xs:double'/>
+                    <xs:element minOccurs='0' name='VAT' type='xs:double'/>
+                    <xs:element minOccurs='0' name='CurrencyUnit' type='xs:string'/>
+                    <xs:element minOccurs='0' name='DistanceUnit' type='xs:string'/>
+                    <xs:element minOccurs='0' name='Error' type='tns:DCChargeError'/>
+                    <xs:element name='Success' type='xs:boolean'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='DeliverySlot'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='TimeSlotStart' type='xs:string'/>
+                    <xs:element minOccurs='0' name='TimeSlotEnd' type='xs:string'/>
+                    <xs:element name='PremiumWindow' type='xs:boolean'/>
+                    <xs:element minOccurs='0' name='Fee' type='xs:double'/>
+                    <xs:element minOccurs='0' name='OOHSurcharge' type='xs:double'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='FeeDetails'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='FlatFee' type='xs:double'/>
+                    <xs:element minOccurs='0' name='Distance' type='xs:double'/>
+                    <xs:element minOccurs='0' name='FeePerDistanceUnit' type='xs:double'/>
+                    <xs:element minOccurs='0' name='TotalFee' type='xs:double'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name='AddressType'>
+                <xs:restriction base='xs:string'>
+                    <xs:enumeration value='Home'/>
+                    <xs:enumeration value='Business'/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name='DCChargeError'>
+                <xs:restriction base='xs:string'>
+                    <xs:enumeration value='INTERNAL_SERVICE_ERROR'/>
+                    <xs:enumeration value='INCORRECT_PARAMETERS'/>
+                    <xs:enumeration value='CANNOT_MATCH_WITH_PROFILE'/>
+                    <xs:enumeration value='CANNOT_MATCH_WITH_COUNTRY'/>
+                    <xs:enumeration value='CANNOT_ACCESS_BING'/>
+                    <xs:enumeration value='ROUTING_ERROR'/>
+                    <xs:enumeration value='NOT_FOUND_DELIVERY_STATION_POSTCODE'/>
+                    <xs:enumeration value='NOT_FOUND_COLLECTION_STATION_POSTCODE'/>
+                    <xs:enumeration value='NOT_FOUND_DELIVERY_CUSTOMER_POSTCODE'/>
+                    <xs:enumeration value='NOT_FOUND_COLLECTION_CUSTOMER_POSTCODE'/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </types>
+    <message name='DCChargeService_GetDCCharges'>
+        <part element='tns:GetDCCharges' name='GetDCCharges'></part>
+    </message>
+    <message name='DCChargeService_GetDCChargesResponse'>
+        <part element='tns:GetDCChargesResponse' name='GetDCChargesResponse'></part>
+    </message>
+    <portType name='DCChargeService'>
+        <operation name='GetDCCharges' parameterOrder='GetDCCharges'>
+            <input message='tns:DCChargeService_GetDCCharges'></input>
+            <output message='tns:DCChargeService_GetDCChargesResponse'></output>
+        </operation>
+    </portType>
+    <binding name='DCChargeServiceBinding' type='tns:DCChargeService'>
+        <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'/>
+        <operation name='GetDCCharges'>
+            <soap:operation soapAction=''/>
+            <input>
+                <soap:body use='literal'/>
+            </input>
+            <output>
+                <soap:body use='literal'/>
+            </output>
+        </operation>
+    </binding>
+    <service name='DCChargeServiceBean'>
+        <port binding='tns:DCChargeServiceBinding' name='DCChargeServiceBeanPort'>
+            <soap:address location='https://10.14.17.244:8443/WizmapWS/DCChargeService'/>
+        </port>
+    </service>
+</definitions>
